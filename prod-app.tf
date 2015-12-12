@@ -36,7 +36,11 @@ resource "aws_instance" "prod-web-001" {
 # web elb
 resource "aws_elb" "prod-elb" {
   name = "prod-elb"
-  subnets = ["${aws_subnet.default.id}"]
+  subnets = [
+    "${aws_subnet.a.id}"
+    "${aws_subnet.b.id}"
+    "${aws_subnet.c.id}"
+  ]
 
   security_groups = [
     "${aws_security_group.allow_all_outgoing.id}",
@@ -58,7 +62,8 @@ resource "aws_elb" "prod-elb" {
     interval = 30
   }
 
-  idle_timeout = 400
+  cross_zone_load_balancing = true
+  idle_timeout = 60
   connection_draining = true
   connection_draining_timeout = 400
 

@@ -12,7 +12,29 @@ resource "aws_internet_gateway" "default" {
 }
 
 # subnets
-resource "aws_subnet" "default" {
+resource "aws_subnet" "a" {
+  vpc_id = "${aws_vpc.default.id}"
+  cidr_block = "10.0.0.0/24"
+  availability_zone = "us-west-2c"
+  map_public_ip_on_launch = true
+
+  tags {
+    Name = "default"
+  }
+}
+
+resource "aws_subnet" "b" {
+  vpc_id = "${aws_vpc.default.id}"
+  cidr_block = "10.0.0.0/24"
+  availability_zone = "us-west-2b"
+  map_public_ip_on_launch = true
+
+  tags {
+    Name = "default"
+  }
+}
+
+resource "aws_subnet" "c" {
   vpc_id = "${aws_vpc.default.id}"
   cidr_block = "10.0.0.0/24"
   availability_zone = "us-west-2c"
@@ -26,7 +48,11 @@ resource "aws_subnet" "default" {
 resource "aws_db_subnet_group" "default" {
   name = "prod-rds"
   description = "DB subnets"
-  subnet_ids = ["${aws_subnet.default.id}"]
+  subnet_ids = [
+    "${aws_subnet.a.id}",
+    "${aws_subnet.b.id}",
+    "${aws_subnet.c.id}"
+  ]
 }
 
 # routing tables
@@ -40,7 +66,17 @@ resource "aws_route_table" "default" {
 }
 
 resource "aws_route_table_association" "default" {
-  subnet_id = "${aws_subnet.default.id}"
+  subnet_id = "${aws_subnet.a.id}"
+  route_table_id = "${aws_route_table.default.id}"
+}
+
+resource "aws_route_table_association" "default" {
+  subnet_id = "${aws_subnet.b.id}"
+  route_table_id = "${aws_route_table.default.id}"
+}
+
+resource "aws_route_table_association" "default" {
+  subnet_id = "${aws_subnet.c.id}"
   route_table_id = "${aws_route_table.default.id}"
 }
 
