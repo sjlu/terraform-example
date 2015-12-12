@@ -57,7 +57,7 @@ resource "aws_elb" "prod-elb" {
     healthy_threshold = 2
     unhealthy_threshold = 2
     timeout = 3
-    target = "HTTP:8000/"
+    target = "HTTP:8000/health"
     interval = 30
   }
 
