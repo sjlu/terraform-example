@@ -6,7 +6,7 @@ resource "aws_instance" "prod-web-001" {
 
   key_name = "${aws_key_pair.master.key_name}"
 
-  subnet_id = "${aws_subnet.default.id}"
+  subnet_id = "${aws_subnet.a.id}"
   security_groups = [
     "${aws_security_group.allow_all_outgoing.id}",
     "${aws_security_group.allow_ssh.id}",
