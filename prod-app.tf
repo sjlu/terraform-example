@@ -99,6 +99,7 @@ resource "aws_elasticache_cluster" "prod-elasitcache" {
   cluster_id = "prod-elasitcache"
 
   engine = "redis"
+  port = "6379"
 
   node_type = "cache.t2.micro"
   num_cache_nodes = 1

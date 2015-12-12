@@ -46,7 +46,7 @@ resource "aws_subnet" "c" {
 }
 
 resource "aws_db_subnet_group" "default" {
-  name = "default"
+  name = "default-db-subnet"
   description = "DB subnets"
   subnet_ids = [
     "${aws_subnet.a.id}",
@@ -56,7 +56,7 @@ resource "aws_db_subnet_group" "default" {
 }
 
 resource "aws_elasticache_subnet_group" "default" {
-  name = "default"
+  name = "default-elasticache-subnet"
   description = "elasticache subnet"
   subnet_ids = [
     "${aws_subnet.a.id}",
