@@ -35,7 +35,7 @@ resource "aws_instance" "prod-web-001" {
 # web elb
 resource "aws_elb" "prod-elb" {
   name = "prod-elb"
-  availability_zones = ["us-west-2a", "us-west-2b", "us-west-2c"]
+  subnets = ["${aws_subnet.public.id}"]
 
   listener {
     instance_port = 10010
@@ -56,8 +56,6 @@ resource "aws_elb" "prod-elb" {
   idle_timeout = 400
   connection_draining = true
   connection_draining_timeout = 400
-
-  subnets = ["${aws_subnet.public.id}"]
 
   instances = []
 }
