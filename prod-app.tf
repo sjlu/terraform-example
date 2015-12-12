@@ -4,7 +4,7 @@ resource "aws_security_group" "allow_internal_outgoing" {
   description = "Allow all internal traffic"
   vpc_id = "${aws_vpc.default.id}"
 
-  egress {
+  ingress {
     from_port = 0
     to_port = 0
     protocol = "-1"
