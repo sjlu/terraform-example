@@ -11,19 +11,26 @@ resource "aws_internet_gateway" "default" {
   vpc_id = "${aws_vpc.default.id}"
 }
 
-# public subnet
-resource "aws_subnet" "public" {
+# subnets
+resource "aws_subnet" "default" {
   vpc_id = "${aws_vpc.default.id}"
   cidr_block = "10.0.0.0/24"
   availability_zone = "us-west-2c"
   map_public_ip_on_launch = true
 
   tags {
-    Name = "public"
+    Name = "default"
   }
 }
 
-resource "aws_route_table" "public" {
+resource "aws_db_subnet_group" "default" {
+  name = "prod-rds"
+  description = "DB subnets"
+  subnet_ids = ["${aws_subnet.default.id}"]
+}
+
+# routing tables
+resource "aws_route_table" "default" {
   vpc_id = "${aws_vpc.default.id}"
 
   route {
@@ -32,9 +39,9 @@ resource "aws_route_table" "public" {
   }
 }
 
-resource "aws_route_table_association" "public" {
-  subnet_id = "${aws_subnet.public.id}"
-  route_table_id = "${aws_route_table.public.id}"
+resource "aws_route_table_association" "default" {
+  subnet_id = "${aws_subnet.default.id}"
+  route_table_id = "${aws_route_table.default.id}"
 }
 
 # security groups

@@ -6,7 +6,7 @@ resource "aws_instance" "prod-web-001" {
 
   key_name = "${aws_key_pair.master.key_name}"
 
-  subnet_id = "${aws_subnet.public.id}"
+  subnet_id = "${aws_subnet.default.id}"
   security_groups = [
     "${aws_security_group.allow_all_outgoing.id}",
     "${aws_security_group.allow_ssh.id}",
@@ -36,7 +36,7 @@ resource "aws_instance" "prod-web-001" {
 # web elb
 resource "aws_elb" "prod-elb" {
   name = "prod-elb"
-  subnets = ["${aws_subnet.public.id}"]
+  subnets = ["${aws_subnet.default.id}"]
 
   security_groups = [
     "${aws_security_group.allow_all_outgoing.id}",
@@ -86,5 +86,6 @@ resource "aws_db_instance" "prod-rds" {
     "${aws_security_group.allow_internal_incoming.id}",
     "${aws_security_group.allow_all_outgoing.id}"
   ]
+  db_subnet_group_name = "${aws_db_subnet_group.default.id}"
 }
 
