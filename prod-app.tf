@@ -1,3 +1,17 @@
+# security groups
+resource "aws_security_group" "allow_internal_outgoing" {
+  name = "allow_internal_outgoing"
+  description = "Allow all internal traffic"
+  vpc_id = "${aws_vpc.default.id}"
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["10.0.0.0/24"]
+  }
+}
+
 # instances
 resource "aws_instance" "prod-web-001" {
   ami = "ami-5189a661"
@@ -9,7 +23,8 @@ resource "aws_instance" "prod-web-001" {
   subnet_id = "${aws_subnet.public.id}"
   security_groups = [
     "${aws_security_group.allow_all_outgoing.id}",
-    "${aws_security_group.allow_ssh.id}"
+    "${aws_security_group.allow_ssh.id}",
+    "${aws_security_group.allow_internal_outgoing.id}"
   ]
 
   tags {
