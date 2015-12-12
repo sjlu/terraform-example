@@ -57,5 +57,7 @@ resource "aws_elb" "prod-elb" {
   connection_draining = true
   connection_draining_timeout = 400
 
-  instances = []
+  instances = [
+    "${aws_instance.prod-web-001.id}"
+  ]
 }
