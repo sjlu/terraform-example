@@ -6,6 +6,11 @@ resource "aws_vpc" "default" {
   enable_dns_hostnames = true
 }
 
+# connects the VPC to the internet
+resource "aws_internet_gateway" "default" {
+  vpc_id = "${aws_vpc.default.id}"
+}
+
 # subnets
 resource "aws_subnet" "default" {
   vpc_id = "${aws_vpc.default.id}"
@@ -27,6 +32,11 @@ resource "aws_db_subnet_group" "default" {
 # routing tables
 resource "aws_route_table" "default" {
   vpc_id = "${aws_vpc.default.id}"
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = "${aws_internet_gateway.default.id}"
+  }
 }
 
 resource "aws_route_table_association" "default" {
