@@ -46,8 +46,18 @@ resource "aws_subnet" "c" {
 }
 
 resource "aws_db_subnet_group" "default" {
-  name = "prod-rds"
+  name = "default"
   description = "DB subnets"
+  subnet_ids = [
+    "${aws_subnet.a.id}",
+    "${aws_subnet.b.id}",
+    "${aws_subnet.c.id}"
+  ]
+}
+
+resource "aws_elasticache_subnet_group" "default" {
+  name = "default"
+  description = "elasticache subnet"
   subnet_ids = [
     "${aws_subnet.a.id}",
     "${aws_subnet.b.id}",

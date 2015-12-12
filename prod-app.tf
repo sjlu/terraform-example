@@ -94,3 +94,18 @@ resource "aws_db_instance" "prod-rds" {
   db_subnet_group_name = "${aws_db_subnet_group.default.id}"
 }
 
+# web redis
+resource "aws_elasticache_cluster" "prod-elasitcache" {
+  cluster_id = "prod-elasitcache"
+
+  engine = "redis"
+
+  node_type = "cache.t2.micro"
+  num_cache_nodes = 1
+
+  subnet_group_name = "${aws_elasticache_subnet_group.default.id}"
+  security_group_ids = [
+    "${aws_security_group.allow_internal_incoming.id}",
+    "${aws_security_group.allow_all_outgoing.id}"
+  ]
+}
