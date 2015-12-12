@@ -38,7 +38,7 @@ resource "aws_elb" "prod-elb" {
   subnets = ["${aws_subnet.public.id}"]
 
   listener {
-    instance_port = 10010
+    instance_port = 8000
     instance_protocol = "http"
     lb_port = 80
     lb_protocol = "http"
