@@ -1,10 +1,10 @@
 provider "aws" {
-  access_key = "AKIAIR7MH32GCVLAWHBQ"
-  secret_key = "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"
+  access_key = "${var.aws_access_key}"
+  secret_key = "${var.aws_secret_key}"
   region = "us-west-2"
 }
 
 provider "dnsimple" {
-  token = "65nsr44lTBGxtjxMl27"
-  email = "tacticalazn@gmail.com"
+  token = "${var.dnsimple_token}"
+  email = "${var.dnsimple_email}"
 }

@@ -21,12 +21,12 @@ resource "aws_instance" "prod-web-001" {
     run_list = ["role[trainerade-app]"]
     node_name = "prod-web-001"
     server_url = "https://api.chef.io/organizations/stevenlu"
-    validation_client_name = "terraform-validator"
-    validation_key_path = "./chef-validator.pem"
+    validation_client_name = "${var.chef_validation_client_name}"
+    validation_key = "${var.chef_validation_key}"
 
     connection {
       user = "ubuntu"
-      key_file = "./master.pem"
+      private_key = "${var.ssh_key}"
       agent = false
     }
   }
