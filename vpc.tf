@@ -51,6 +51,19 @@ resource "aws_security_group" "allow_all_outgoing" {
   }
 }
 
+resource "aws_security_group" "allow_internal_incoming" {
+  name = "allow_internal_incoming"
+  description = "Allow all internal traffic"
+  vpc_id = "${aws_vpc.default.id}"
+
+  ingress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["10.0.0.0/24"]
+  }
+}
+
 resource "aws_security_group" "allow_ssh" {
   name = "allow_ssh"
   description = "Allow SSH connections for servers"

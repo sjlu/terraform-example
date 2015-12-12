@@ -1,17 +1,3 @@
-# security groups
-resource "aws_security_group" "allow_internal_outgoing" {
-  name = "allow_internal_outgoing"
-  description = "Allow all internal traffic"
-  vpc_id = "${aws_vpc.default.id}"
-
-  ingress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    cidr_blocks = ["10.0.0.0/24"]
-  }
-}
-
 # instances
 resource "aws_instance" "prod-web-001" {
   ami = "ami-5189a661"
@@ -24,7 +10,7 @@ resource "aws_instance" "prod-web-001" {
   security_groups = [
     "${aws_security_group.allow_all_outgoing.id}",
     "${aws_security_group.allow_ssh.id}",
-    "${aws_security_group.allow_internal_outgoing.id}"
+    "${aws_security_group.allow_internal_incoming.id}"
   ]
 
   tags {
@@ -80,3 +66,25 @@ resource "aws_elb" "prod-elb" {
     "${aws_instance.prod-web-001.id}"
   ]
 }
+
+# web db
+resource "aws_db_instance" "prod-rds" {
+  identifier = "prod-rds"
+
+  allocated_storage = 20
+  instance_class = "db.t2.micro"
+  engine = "mysql"
+  engine_version = "5.6.23"
+  storage_type = "gp2"
+  availability_zone = "us-west-2c"
+
+  name = "trainerade"
+  username = "root"
+  password = "${var.rds_master_password}"
+
+  vpc_security_group_ids = [
+    "${aws_security_group.allow_internal_incoming.id}",
+    "${aws_security_group.allow_all_outgoing.id}"
+  ]
+}
+

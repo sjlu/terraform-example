@@ -9,3 +9,4 @@ variable "chef_validation_client_name" {
 }
 variable "chef_validation_key" {}
 variable "ssh_key" {}
+variable "rds_master_password" {}
