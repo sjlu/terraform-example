@@ -37,8 +37,8 @@ resource "aws_instance" "prod-web-001" {
 resource "aws_elb" "prod-elb" {
   name = "prod-elb"
   subnets = [
-    "${aws_subnet.a.id}"
-    "${aws_subnet.b.id}"
+    "${aws_subnet.a.id}",
+    "${aws_subnet.b.id}",
     "${aws_subnet.c.id}"
   ]
 
