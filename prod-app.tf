@@ -52,6 +52,11 @@ resource "aws_elb" "prod-elb" {
   name = "prod-elb"
   subnets = ["${aws_subnet.public.id}"]
 
+  security_groups = [
+    "${aws_security_group.allow_all_outgoing.id}",
+    "${aws_security_group.allow_http.id}"
+  ]
+
   listener {
     instance_port = 8000
     instance_protocol = "http"
@@ -67,7 +72,6 @@ resource "aws_elb" "prod-elb" {
     interval = 30
   }
 
-  cross_zone_load_balancing = true
   idle_timeout = 400
   connection_draining = true
   connection_draining_timeout = 400
