@@ -23,6 +23,12 @@ resource "aws_instance" "prod-web-001" {
     server_url = "https://api.chef.io/organizations/stevenlu"
     validation_client_name = "terraform-validator"
     validation_key_path = "./chef-validator.pem"
+
+    connection {
+      user = "ubuntu"
+      key_file = "./master.pem"
+      agent = false
+    }
   }
 }
 
